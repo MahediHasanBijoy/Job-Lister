@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Listing;
+use App\Http\Controllers\ListingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,15 +15,16 @@ use App\Models\Listing;
 |
 */
 
-Route::get('/', function () {
-    $listings = Listing::all();
-    return view('listings', compact('listings'));
-});
+// // Without controller show all listings 
+// Route::get('/', function () {
+//     $listings = Listing::all();
+//     return view('listings', compact('listings'));
+// });
 
-// Route model binding:: automatically generate 404-page if object not found
-Route::get('/listing/{listing}', function(Listing $listing){
-    return view('listing', ['listing'=>$listing]);
-});
+// // Route model binding:: automatically generate 404-page if object not found
+// Route::get('/listing/{listing}', function(Listing $listing){
+//     return view('listing', ['listing'=>$listing]);
+// });
 
 //test
 Route::get('/test', function(){
@@ -47,3 +49,23 @@ Route::get('/test', function(){
 //     dd($car->color);
 // });
 
+// With controller show all listings
+Route::get('/', [ListingController::class, 'index']);
+
+// show create listing form
+Route::get('/listing/create', [ListingController::class, 'create']);
+
+// with controller show single listing through route model binding
+Route::get('/listing/{listing}', [ListingController::class, 'show']);
+
+// store create form data
+Route::post('/listing/store', [ListingController::class, 'store'])->name('listing.store');
+
+// edit listing
+Route::get('/listing/edit/{listing}', [ListingController::class, 'edit'])->name('listing.edit');
+
+// update listing
+Route::post('/listing/update/{listing}', [ListingController::class, 'update'])->name('listing.update');
+
+// delete listing
+Route::get('/listing/destroy/{listing}', [ListingController::class, 'destroy'])->name('listing.destroy');

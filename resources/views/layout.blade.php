@@ -59,10 +59,14 @@
             <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
 
             <a
-                href="create.html"
+                href="/listing/create"
                 class="absolute top-1/3 right-10 bg-black text-white py-2 px-5"
                 >Post Job</a
             >
         </footer>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script src="{{asset('js/app.js')}}"></script>
     </body>
 </html>
