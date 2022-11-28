@@ -10,5 +10,10 @@ class Listing extends Model
     use HasFactory;
 
 
-    protected $fillable = ['company', 'title', 'location', 'email', 'website', 'tags', 'logo', 'description'];
+    protected $fillable = ['company', 'title', 'location', 'email', 'website', 'tags', 'logo', 'description', 'user_id'];
+
+    // relationship with user
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

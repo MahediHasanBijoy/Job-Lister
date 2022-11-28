@@ -10,36 +10,22 @@ class ListingController extends Controller
 {
     //show all listings
     public function index(){
-        /*$listings = Listing::all();
 
-        //filter as per query tags
-        if(request('tag')){
-            $filteredList = [];
-            foreach($listings as $listing){
-                if(str_contains($listing->tags, request('tag'))){
-                    array_push($filteredList, $listing);
-                }
-            }
-            $listings = $filteredList;
-            return view('listings',compact('listings'));
-        }
-        
-        return view('listings', compact('listings')); */
-
-
-
-        // improved version of the above code
-
+        // when tag is selected as query string
         if(request('tag')){
             $search_str = request('tag');
             $listings = Listing::where('tags', 'like', '%'.$search_str.'%')->latest()->paginate(6);
             return view('listing.listings', compact('listings'));
-        }else if(request('search')){
+        }
+        // when search is used as query string
+        else if(request('search')){
             $search_str = request('search');
 
             $listings = Listing::where('title', 'like', '%'.$search_str.'%')->orWhere('tags', 'like', '%'.$search_str.'%')->orWhere('description', 'like', '%'.$search_str.'%')->latest()->paginate(6);
             return view('listing.listings', compact('listings'));
-        }else{
+        }
+        // showing all listings
+        else{
             $listings = Listing::latest()->paginate(6);
             return view('listing.listings', compact('listings'));
         }
@@ -59,7 +45,6 @@ class ListingController extends Controller
 
     // show create listing form
     public function create(){
-
         return view('listing.create');
     }
 
@@ -87,6 +72,10 @@ class ListingController extends Controller
             $validData['logo']=$filename;
         }
         
+        // store current authenticated user id
+        $validData['user_id'] = auth()->id();
+
+
         // store form data
         Listing::create($validData);
 
@@ -102,7 +91,10 @@ class ListingController extends Controller
 
     // Update listing
     public function update(Request $request, Listing $listing){
-
+        // check if the user is authorized before update
+        if($listing->user_id != auth()->id()){
+            abort('403', 'Unauthorized action');
+        }
         //validation rules
         $validData = $request->validate([
             'company'=>'required',
@@ -139,7 +131,25 @@ class ListingController extends Controller
 
     // Delete listing
     public function destroy(Listing $listing){
+        // check if the user is authorized before delete
+        if($listing->user_id != auth()->id()){
+            abort('403', 'Unauthorized action');
+        }
+
+        // remove file from storage
+        if(!is_null($listing->logo)){
+            Storage::delete('public/logos/'.$listing->logo);
+        }
         $listing->delete();
         return redirect('/');
+    }
+
+    // Manage Listing
+    public function manage(){
+        $user = auth()->user();
+        // user listing relationship
+        $listings = $user->listings()->latest()->paginate(6);
+
+        return view('listing.manage', compact('listings'));
     }
 }

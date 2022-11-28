@@ -50,8 +50,10 @@
                         >
                     </div>
                 </div>
+
+                {{-- 
                 <a class="block bg-blue-700 text-white mt-6 py-2 px-4 rounded-xl hover:opacity-80" href="{{route('listing.edit', $listing->id)}}">Edit</a>
-                <a class="block bg-red-700 text-white mt-6 py-2 px-4 rounded-xl hover:opacity-80" href="{{route('listing.destroy', $listing->id)}}">Delete</a>
+                <a class="block bg-red-700 text-white mt-6 py-2 px-4 rounded-xl hover:opacity-80" href="{{route('listing.destroy', $listing->id)}}">Delete</a> --}}
             </div>
 
         </x-card>

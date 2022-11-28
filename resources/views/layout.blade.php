@@ -32,17 +32,37 @@
                 ><img class="w-24" src="{{asset('images/logo.png')}}" alt="" class="logo"
             /></a>
             <ul class="flex space-x-6 mr-6 text-lg">
+                <!-- if user is authenticated --> 
+                @auth
                 <li>
-                    <a href="register.html" class="hover:text-laravel"
+                    <span>Welcome, <b><i class="text-orange-500">{{auth()->user()->name}}</b></i></span>
+                </li>
+                <li>
+                    <a href="/listing/manage" class="hover:text-laravel"
+                        ><i class="fa-solid fa-gear"></i> Manage Listings</a
+                    >
+                </li>
+                <li>
+                    <form action="/logout" method="post">
+                        @csrf
+                        <button type="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Logout</button>
+                    </form>
+                </li>
+                <!-- if user is not authenticated --> 
+                @else
+                <li>
+                    <a href="/register" class="hover:text-laravel"
                         ><i class="fa-solid fa-user-plus"></i> Register</a
                     >
                 </li>
                 <li>
-                    <a href="login.html" class="hover:text-laravel"
+                    <a href="/login" class="hover:text-laravel"
                         ><i class="fa-solid fa-arrow-right-to-bracket"></i>
                         Login</a
                     >
                 </li>
+                @endauth
             </ul>
         </nav>
 
@@ -54,15 +74,16 @@
         </main>
 
         <footer
-            class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-orange-500 text-white h-24 mt-24 opacity-90 md:justify-center"
+            class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-orange-500 text-white h-20 mt-20 opacity-90 md:justify-center"
         >
             <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
-
+            @auth
             <a
                 href="/listing/create"
                 class="absolute top-1/3 right-10 bg-black text-white py-2 px-5"
                 >Post Job</a
             >
+            @endauth
         </footer>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
